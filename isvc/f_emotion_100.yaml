@@ -1,0 +1,19 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "classifier"
+  annotations:
+    serving.kserve.io/enable-metric-aggregation: "true"
+    serving.kserve.io/enable-prometheus-scraping: "true"
+spec:
+  predictor:
+    canaryTrafficPercent: 100
+    serviceAccountName: s3-read-only
+    model:
+      modelFormat:
+        name: pytorch
+      storageUri: s3://emlo-s23/kserve-mar/emotion-classifier/
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 2Gi
